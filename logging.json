@@ -1,0 +1,7 @@
+{
+    "SERVER": "False",
+    "CLIENT": "False",
+    "ERROR": "True",
+    "TRANSACTION": "True",
+    "DEBUG": "False"
+}
