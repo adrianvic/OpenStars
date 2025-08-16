@@ -10,18 +10,20 @@ class Logger:
     red = Fore.RED
     green = Fore.GREEN
     white = Fore.WHITE
+    magenta = Fore.MAGENTA
 
     @staticmethod
     def log(logType, text):
         logType = logType.upper()
         # print(f"{Fore.RED}{logType} {text} {Logger.config.get(logType, True)}") # logging
-        if Logger.config.get(logType, True):
+        if (Logger.config.get(logType, True)) == "True" or logType == "*":
             color = Logger.white # resets the color
             match logType:
-                case "SERVER": color = Logger.yellow
+                case "SERVER": color = Logger.magenta
                 case "CLIENT": color =  Logger.lightblue
                 case "ERROR": color = Logger.red
                 case "TRANSACTION": color = Logger.green
                 case "DEBUG": color = Logger.blue
+                case "WARNING": color = Logger.yellow
             print(f"{color}[{logType}] {text}")
                 

@@ -10,7 +10,7 @@ class PlayerTransactions:
     @staticmethod
     def gems(player, amount):
         player.gems += amount
-        player.db.update_player_account(player.token, 'Gems', player.resources)
+        player.db.update_player_account(player.token, 'Gems', player.gems)
         Logger.log("TRANSACTION", f'[{player.name}] Gems ({amount}) successful')
 
     @staticmethod

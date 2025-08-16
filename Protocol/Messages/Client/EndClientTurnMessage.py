@@ -1,5 +1,6 @@
 from ByteStream.Reader import Reader
 from Protocol.LogicCommandManager import LogicCommandManager
+from Utils.Logger import Logger
 
 class EndClientTurnMessage(Reader):
     def __init__(self, client, player, initial_bytes):
@@ -25,15 +26,15 @@ class EndClientTurnMessage(Reader):
                 if command:
                     self.commands[x]["cls"] = command
                     command.decode(self)
-                    print(f"CommandID: {commandID}, {command.__name__} handled!")
+                    Logger.log("warning", f"CommandID: {commandID}, {command.__name__} handled!")
                 else:
                     # Attempt to decode LogicCommand, a more proper reimplementation of Commands will come soon.
                     self.readVInt()
                     self.readVInt()
                     self.readLogicLong()
-                    print(f"CommandID: {commandID}, {LogicCommandManager.getCommandName(commandID)} unhandled!")
+                    Logger.log("warning", f"CommandID: {commandID}, {LogicCommandManager.getCommandName(commandID)} unhandled!")
             else:
-                print(f"CommandID: {commandID} unhandled!")
+                Logger.log("warning", f"CommandID: {commandID} unhandled!")
 
     def process(self, db):
         if not self.commands: return

@@ -3,5 +3,6 @@
     "CLIENT": "False",
     "ERROR": "True",
     "TRANSACTION": "True",
-    "DEBUG": "False"
+    "DEBUG": "False",
+    "WARNING": "True"
 }

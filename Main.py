@@ -24,14 +24,14 @@ class Main:
             print(Logger.yellow + r"""+---------+
 |OpenStars|
 |  *   *  | Version 1.0
-|** *   * | By tenkuma
-|    **  *| Under GPL-3.0 copyleft license
-|      *  |
+|** *   * | fork by tenkuma
+|    **  *| Under GPL-3.0 license
+|      *  | Originally by PhoenixFire6934
 |    *   *|
-|     *   |
-|         |
-|  **     |
-|*        |
+|     *   | Special thanks to:
+|         | athemm
+|  **     | CrazorTheCat
+|*        | 8-bitHacc
 | *       |
 |         |
 |       * |
