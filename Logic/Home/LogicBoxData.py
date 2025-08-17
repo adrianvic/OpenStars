@@ -76,7 +76,7 @@ class LogicBoxData:
     def generate_brawler_reward(self):
         locked_brawlers = sorted(set(self.player.brawlers_id) - set(self.player.brawlers_unlocked))
         brawler = random.choice(self.player.brawlers_id)
-        if PlayerTransactions.give_brawler(self.player, brawler):
+        if PlayerTransactions.brawler(self.player, brawler):
             brawler_reward = {'Amount': 1, 'DataRef': [16, brawler], 'Value': 1}
             self.box_rewards['Rewards'].append(brawler_reward)
 

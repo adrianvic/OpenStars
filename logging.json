@@ -1,8 +1,10 @@
 {
-    "SERVER": "False",
-    "CLIENT": "False",
+    "SERVER": "True",
+    "CLIENT": "True",
     "ERROR": "True",
     "TRANSACTION": "True",
-    "DEBUG": "False",
+    "DEBUG": "True",
+    "NETWORK CLIENT": "True",
+    "NETWORK SERVER": "True",
     "WARNING": "True"
 }

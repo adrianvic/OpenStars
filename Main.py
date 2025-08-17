@@ -1,15 +1,15 @@
 from Core.Networking.Server import Server
 import json  # meh
+from Config import load_config
+import Config
 from Utils.Logger import Logger
-
 from Utils.Updater import Updater
-
 
 class Main:
     def __init__(self):
         self.crashCount: int = 0
-        self.configuration = json.loads(open("config.json", "r").read())
-        self.useUpdater = self.configuration.get("UpgradesEnabled", False)
+        load_config()
+        self.useUpdater = Config.config.get("UpgradesEnabled", False)
         self.main()
         self.updater: Updater = None
 
@@ -43,7 +43,7 @@ class Main:
 
         except Exception as e:
             Logger.log("error", f"Encountered exception: {e}")
-            Logger.log("error", f"Exception type:", type(e).__name__)
+            Logger.log("error", f"Exception type: {type(e).__name__}")
             if self.useUpdater:
                 self.crashCount += 1
 

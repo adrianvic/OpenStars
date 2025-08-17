@@ -1,9 +1,10 @@
 class LogicPlayerStats:
 
-    def getPlayerStats(self, accountData):
+    def getPlayerStats(self):
 
+        accountData = self.player_data
+        
         playerStats = {
-
             '3v3Victories': 0,
             'ExperiencePoints': accountData['ExperiencePoints'],
             'Trophies': accountData['Trophies'],

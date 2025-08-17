@@ -26,7 +26,7 @@ class PlayerProfileMessage(Writer):
             self.writeVInt(self.player_data['BrawlersHighestTrophies'][str(x)])
             self.writeVInt(self.player_data['BrawlersLevel'][str(x)] + 2)
 
-        self.playerStats = LogicPlayerStats.getPlayerStats(self, self.player_data)
+        self.playerStats = LogicPlayerStats.getPlayerStats(self)
 
         self.writeVInt(len(self.playerStats))
         for x in self.playerStats:

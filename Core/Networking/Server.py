@@ -5,13 +5,13 @@ from Utils.Logger import Logger
 from DataBase.MongoDB import MongoDB
 from Core.Networking.ClientThread import ClientThread
 from Protocol.Messages.Server.LoginFailedMessage import LoginFailedMessage
+import Config
 
 class Server:
     clients_count = 0
 
     def __init__(self, ip: str, port: int):
-        self.config = json.loads(open('config.json', 'r').read())
-        self.db = MongoDB(self.config['MongoConnectionURL'])
+        self.db = MongoDB(Config.config['MongoConnectionURL'])
         self.server = socket.socket()
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # You can start server with the same address
         self.port = port

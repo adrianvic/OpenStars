@@ -1,5 +1,5 @@
 from ByteStream.Writer import Writer
-
+from Utils.Logger import Logger
 
 class LoginOkMessage(Writer):
     def __init__(self, client, player, account_id, account_token):
@@ -10,6 +10,7 @@ class LoginOkMessage(Writer):
         self.id = 20104
 
     def encode(self):
+        Logger.log("client", f"ID {self.account_id} USR {self.player.name} logged in")
         self.writeLong(self.account_id)
         self.writeLong(self.account_id)
 

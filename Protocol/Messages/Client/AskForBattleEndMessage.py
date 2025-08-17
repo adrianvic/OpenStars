@@ -6,14 +6,13 @@ class AskForBattleEndMessage(Reader):
         super().__init__(initial_bytes)
         self.player = player
         self.client = client
-        self.players: list = []
+        self.players = []
 
     def decode(self):
         self.result   = self.readVInt()
         self.unk      = self.readVInt()
         self.rank     = self.readVInt()
         self.mapID    = self.readDataReference()
-
         self.count    = self.readVInt()
 
         for player in range(self.count):
@@ -21,8 +20,8 @@ class AskForBattleEndMessage(Reader):
 
 
     def process(self, db):
-        if self.player.status != 8: return
-        if self.count not in [3, 6, 10]: return
+        # if self.player.status != 8: return
+        # if self.count not in [3, 6, 10]: return
 
         if self.rank != 0:
             if self.players[0]['team'] == self.players[1]['team']:

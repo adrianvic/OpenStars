@@ -7,7 +7,6 @@ from Protocol.Messages.Server.OwnHomeDataMessage import OwnHomeDataMessage
 from Protocol.Messages.Server.MyAllianceMessage import MyAllianceMessage
 from Protocol.Messages.Server.AllianceStreamMessage import AllianceStreamMessage
 
-
 class LoginMessage(Reader):
     def __init__(self, client, player, initial_bytes):
         super().__init__(initial_bytes)

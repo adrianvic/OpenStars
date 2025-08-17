@@ -1,4 +1,6 @@
 import zlib
+import json
+import Config
 from Utils.Helpers import Helpers
 from Utils.Logger import Logger
 
@@ -68,8 +70,9 @@ class Writer:
             self.writeInt16(0)
         self.buffer += packet + b'\xff\xff\x00\x00\x00\x00\x00'
         self.client.send(self.buffer)
-        Logger.log("server", f'disPacketID: {self.id}, Name: {type(self).__name__}, Length: {len(self.buffer)}')
 
+        if type(self).__name__ not in Config.config["DisabledPacketLogging"]:
+            Logger.log("network server", f'ADDR: {self.client.getpeername()} disPacketID: {self.id} = {type(self).__name__} ({len(self.buffer)} bytes)')
 
     def sendByID(self, ID):
         self.encode()

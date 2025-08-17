@@ -1,51 +1,54 @@
 from io import BufferedReader, BytesIO
 
-
 class Reader(BufferedReader):
     def __init__(self, initial_bytes, endian: str = 'big'):
         super().__init__(BytesIO(initial_bytes))
         self.buffer = initial_bytes
         self.endian = endian
-        self.i = 0
+        self.offset = 0  # Initialize the offset attribute
 
     def readByte(self):
-        return int.from_bytes(self.read(1), "big")
+        byte = self.read(1)
+        self.offset += 1  # Increment offset
+        return int.from_bytes(byte, "big")
 
     def readVInt(self):
         n = self._read_varint(True)
         return (n >> 1) ^ (-(n & 1))
-    
+
     def readIntList(self) -> list:
         intList = []
         length = self.readVInt()
         for x in range(length):
             intList.append(self.readVInt())
-        
         return intList
 
     def readShort(self, length=2):
-        return int.from_bytes(self.read(length), "big")
+        value = int.from_bytes(self.read(length), "big")
+        self.offset += length  # Increment offset
+        return value
 
     def readInt(self, length=4):
-        return int.from_bytes(self.read(length), "big")
+        value = int.from_bytes(self.read(length), "big")
+        self.offset += length  # Increment offset
+        return value
 
     def readLong(self):
-        return self.readInt(8) # 2 Ints, better implementation soon :)
-    
+        return self.readInt(8)  # 2 Ints, better implementation soon :)
+
     def readUInt8(self) -> int:
         return self.readUInteger()
 
     def readUInteger(self, length: int = 1) -> int:
         result = 0
         for x in range(length):
-            byte = self.buffer[self.i]
-
+            byte = self.buffer[self.offset]  # Use offset instead of self.i
             bit_padding = x * 8
             if self.endian == 'big':
                 bit_padding = (8 * (length - 1)) - bit_padding
 
             result |= byte << bit_padding
-            self.i += 1
+            self.offset += 1  # Increment offset
 
         return result
 
@@ -66,12 +69,8 @@ class Reader(BufferedReader):
                 break
         return result
 
-
     def readBool(self) -> bool:
-        if self.readUInt8() >= 1:
-            return True
-        else:
-            return False
+        return self.readUInt8() >= 1
 
     def readDataReference(self):
         a = self.readVInt()

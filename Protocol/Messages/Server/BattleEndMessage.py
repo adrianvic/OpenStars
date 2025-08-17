@@ -1,4 +1,6 @@
 from ByteStream.Writer import Writer
+from Logic.PlayerTransactions import PlayerTransactions
+from Utils.Debugging import Debugging
 
 class BattleEndMessage(Writer):
     def __init__(self, client, player, gamemode: int, result: int, players: list):
@@ -8,37 +10,32 @@ class BattleEndMessage(Writer):
         self.gamemode    = gamemode
         self.result  = result
         self.players = players
-        print(client)
-        print(player)
-        print(gamemode)
-        print(result)
-        print(players)
 
     def encode(self):
         # Mostly taken from Icaro (IsaaSooBarr) as the comments are quite useful for everyone
         self.writeVInt(self.gamemode)  # Battle End Game Mode, 0 = 3vs3, 2 = Showdown, 3 = Robo Rumble, 4 = Big Game, 5 = Duo Showdown, 6 = Boss Fight
         self.writeVInt(self.result)  # Result (Victory/Defeat/Draw/Rank Score)
         self.writeVInt(0)  # Tokens Gained
-        self.writeVInt(10)  # Trophies Result
-        self.writeVInt(10)  # Power Play Points Gained
+        self.writeVInt(self.transaction())  # Trophies Result
+        self.writeVInt(0)  # Power Play Points Gained
         self.writeVInt(0)  # Doubled Tokens
         self.writeVInt(0)  # Double Token Event
         self.writeVInt(0)  # Token Doubler Remaining
         self.writeVInt(0)  # Big Game/Robo Rumble Time and Boss Fight Level Cleared
-        self.writeVInt(10)  # Epic Win Power Play Points Gained
-        self.writeVInt(1)  # Championship Level Passed
-        self.writeVInt(1)  # Challenge Reward Type (0 = Star Points, 1 = Star Tokens)
+        self.writeVInt(0)  # Epic Win Power Play Points Gained
+        self.writeVInt(0)  # Championship Level Passed
+        self.writeVInt(0)  # Challenge Reward Type (0 = Star Points, 1 = Star Tokens)
         self.writeVInt(0)  # Challenge Reward Amount
         self.writeVInt(0)  # Championship Losses Left
         self.writeVInt(0)  # Championship Maximum Losses
-        self.writeVInt(1)  # Coin Shower Event
+        self.writeVInt(0)  # Coin Shower Event
         self.writeVInt(0)  # Underdog Trophies
         # Maybe here I could write a few uint8s... but not very ideal
         self.writeVInt(
-            -1)  # Battle Result Type ((-16)-(-1) = Power Play Battle End, 0-15 = Practice and Championship Battle End, 16-31 = Matchmaking Battle End, 32-47 = Friendly Game Battle End, 48-63  = Spectate and Replay Battle End, 64-79 = Championship Battle End)
+            32)  # Battle Result Type ((-16)-(-1) = Power Play Battle End, 0-15 = Practice and Championship Battle End, 16-31 = Matchmaking Battle End, 32-47 = Friendly Game Battle End, 48-63  = Spectate and Replay Battle End, 64-79 = Championship Battle End)
         self.writeVInt(0)  # Championship Challenge Type
         self.writeVInt(0)  # Championship Cleared and Beta Quests
-
+        
         # Players Array
         self.writeVInt(len(self.players))  # Players
         for hero in self.players:
@@ -82,3 +79,17 @@ class BattleEndMessage(Writer):
 
         self.writeDataReference(28, 0)  # Player Profile Icon
         self.writeBoolean(False)  # Play Again Entry
+        # Debugging.decode_n_dump(self.buffer)
+
+    def transaction(self):
+        trophiesAmount = 0
+        if self.result == 0 and self.gamemode == 0:
+            trophiesAmount = 8
+        if self.result == 1 and self.gamemode == 0:
+            trophiesAmount = -4
+        if self.result == 0 and self.gamemode == 1:
+            trophiesAmount = 5
+        if self.result == 1 and self.gamemode == 1:
+            trophiesAmount = -5
+        PlayerTransactions.trophies(self.player, trophiesAmount, self.player.home_brawler)
+        return trophiesAmount

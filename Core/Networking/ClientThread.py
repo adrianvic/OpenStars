@@ -1,5 +1,6 @@
 import time
 import json
+import Config
 from threading import *
 from Logic.Player import Player
 from Logic.Device import Device
@@ -17,8 +18,7 @@ class ClientThread(Thread):
         self.db = db
         self.config = json.loads(open('config.json', 'r').read())
         self.device = Device(self.client)
-        self.player = Player(self.device)
-
+        self.player = Player(self.device, self.db)
 
     def recvall(self, length: int):
         data = b''
@@ -62,7 +62,7 @@ class ClientThread(Thread):
 
                     if packet_id in packets:
                         packet_name = packets[packet_id].__name__
-                        Logger.log("client", f'PacketID: {packet_id}, Name: {packet_name} Length: {packet_length}')
+                        if packet_name not in Config.config["DisabledPacketLogging"]: Logger.log("network client", f'ADDR: {self.address} PID: {self.player.ID} USR: {self.player.name} ID: {packet_id} = {packet_name} ({packet_length} bytes)')
 
                         message = packets[packet_id](self.client, self.player, packet_data)
                         message.decode()
@@ -72,7 +72,7 @@ class ClientThread(Thread):
                             Helpers.connected_clients["Clients"][str(self.player.ID)] = {"SocketInfo": self.client}
 
                     else:
-                        Logger.log("client", f'Unhandled Packet! ID: {packet_id}, Length: {packet_length}')
+                        Logger.log("warning", f'Unhandled Packet! ADDR {self.address} ID {packet_id} ({packet_length} bytes)')
 
                 if time.time() - last_packet > 10:
                     self.on_disconnect()

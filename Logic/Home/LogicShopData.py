@@ -2,9 +2,7 @@ import json
 from datetime import datetime
 
 class LogicShopData:
-
     shop_resources = json.loads(open('shop.json', 'r').read())
-
     gold_packs = shop_resources['GoldPacks']
     gold_cost, gold_amount = [], []
 

@@ -111,8 +111,6 @@ class Player:
 
     clients = {}
 
-
-    def __init__(self, device):
+    def __init__(self, device, db):
         self.device = device
-
-
+        self.db = db
