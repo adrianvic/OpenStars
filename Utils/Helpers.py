@@ -73,3 +73,55 @@ class Helpers:
             self.player.message_tick = club_data['Messages'][-1]['Tick']
         except:
             pass
+    
+    @staticmethod
+    def kick_player(client_id: str, kick_id = 1, reason: str = "Kicked by server"):
+        from Protocol.Messages.Server.LoginFailedMessage import LoginFailedMessage
+        from Utils.Logger import Logger
+
+        client_entry = Helpers.connected_clients["Clients"].get(client_id)
+
+        if not client_entry:
+            return False
+
+        sock = client_entry["SocketInfo"]
+
+        class FakePlayer:
+            err_code = int(kick_id)
+            patch_url = ""
+            update_url = ""
+            maintenance_time = 0
+
+        player = FakePlayer()
+        msg = LoginFailedMessage(sock, player, reason)
+        msg.encode()
+        msg.send()
+
+        try:
+            sock.close()
+        except Exception as e:
+            Logger.log("error", f"Error closing socket for {client_id}: {e}")
+
+        del Helpers.connected_clients["Clients"][client_id]
+        Helpers.connected_clients["ClientsCount"] -= 1
+
+        Logger.log("client", f"Kicked client {client_id} – {reason}")
+        return True
+
+    @staticmethod
+    def serialize_socket_info(socket_info):
+        if socket_info is None or socket_info._closed:
+            return "Socket closed"
+        return {
+            "local_address": socket_info.getsockname(),
+            "remote_address": socket_info.getpeername() if socket_info.getpeername() else "Not connected"
+        }
+
+    @staticmethod
+    def serialize_clients(clients):
+        serialized_clients = {}
+        for client_id, client_data in clients.items():
+            serialized_clients[client_id] = {
+                "SocketInfo": Helpers.serialize_socket_info(client_data['SocketInfo'])
+            }
+        return serialized_clients

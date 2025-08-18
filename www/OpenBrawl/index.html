@@ -1,0 +1,43 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="index.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="headerHelper">
+            <header>
+            <h1><pre>+OpenStars----------------+
+|  *    *    *            | Server
+|*       *      *      *  | Websocket
+|    *    *   *           | Command
+|* *          *           | Interface
++-------------------------+</pre></h1>
+            </header>
+            <div id="loginBox">
+                <input type="text" id="serverAddressInput" placeholder="server address" value="localhost:8765">
+                <!-- <input type="text" id="serverAddressInput" placeholder="login password"> -->
+                <button id="loginButton">connect</button>
+            </div>
+        </div>
+    <main>
+        <div id="playersBox">
+            <h2>players</h2>
+            <div id="playersList">
+                <button id="plRefresh" onclick="getPlayersList()">Refresh</button>
+                <div id="playersListHelper"></div>
+            </div>
+        </div>
+        <div id="outputBox">
+            <h2>console</h2>
+            <textarea name="command" id="commandOutput" readonly></textarea>
+                    <div id="commandBox">
+            <input type="text" id="commandInput">
+            <button id="sendCommandButton">Send</button>
+        </div>
+        </div>
+    </main>
+    </body>
+</html>

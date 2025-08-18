@@ -3,7 +3,6 @@ import json
 
 class Logger:
     config = json.loads(open("logging.json", "r").read())
-
     yellow = Fore.YELLOW
     blue = Fore.BLUE
     lightblue = Fore.LIGHTBLUE_EX
@@ -13,9 +12,10 @@ class Logger:
     magenta = Fore.MAGENTA
     lightgreen = Fore.LIGHTGREEN_EX
     lightmagenta = Fore.LIGHTMAGENTA_EX
+    cyan = Fore.CYAN
 
     @staticmethod
-    def log(logType, text):
+    def log(logType, text, dryRun = False):
         logType = logType.upper()
         # print(f"{Fore.RED}{logType} {text} {Logger.config.get(logType, True)}") # logging
         if (Logger.config.get(logType, True)) == "True" or logType == "*":
@@ -29,5 +29,7 @@ class Logger:
                 case "WARNING": color = Logger.yellow
                 case "NETWORK CLIENT": color = Logger.lightgreen
                 case "NETWORK SERVER": color = Logger.lightmagenta
-            print(f"{color}[{logType}] {text}")
-                
+                case "CONSOLECOMMAND": color = Logger.cyan
+            msg = f"[{logType}] {text}"
+            if not dryRun: print(f"{Fore.RESET}{color}{msg}", flush=True)
+            return msg
