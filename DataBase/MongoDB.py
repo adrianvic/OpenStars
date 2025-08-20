@@ -5,14 +5,15 @@ from DataBase.MongoUtils import MongoUtils
 from Logic.Player import Player
 import json
 import bson
+import Config
 from Utils.Helpers import Helpers
 from Utils.Logger import Logger
 
 
 class MongoDB:
-    def __init__(self, conn_str):
+    def __init__(self):
         self.player = Player
-        self.client = pymongo.MongoClient(conn_str, serverSelectionTimeoutMS = 5000)
+        self.client = pymongo.MongoClient(Config.config['DBConnectionURL'], serverSelectionTimeoutMS = 5000)
         try:
             Logger.log("debug", f"Connecting to Mongo DataBase...")
             self.client.server_info()

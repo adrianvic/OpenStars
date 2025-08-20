@@ -4,8 +4,8 @@
     "ERROR": "True",
     "TRANSACTION": "True",
     "DEBUG": "False",
-    "NETWORK CLIENT": "False",
+    "NETWORK CLIENT": "True",
     "NETWORK SERVER": "False",
-    "WARNING": "True",
+    "WARNING": "False",
     "CONSOLECOMMAND": "True"
 }

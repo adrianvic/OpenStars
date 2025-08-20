@@ -1,17 +1,18 @@
 import json
 import socket
+import Config
 from Utils.Helpers import Helpers
 from Utils.Logger import Logger
 from DataBase.MongoDB import MongoDB
+from DataBase.SQLDB import SQLDatabase
 from Core.Networking.ClientThread import ClientThread
 from Protocol.Messages.Server.LoginFailedMessage import LoginFailedMessage
-import Config
 
 class Server:
     clients_count = 0
 
     def __init__(self, ip: str, port: int):
-        self.db = MongoDB(Config.config['MongoConnectionURL'])
+        self.db = MongoDB() if Config.config["DBBackend"] == 'mongodb' else SQLDatabase()
         self.server = socket.socket()
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # You can start server with the same address
         self.port = port

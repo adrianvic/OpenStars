@@ -1,3 +1,5 @@
+import pymysql
+
 class MongoUtils:
     def insert_data(self, collection,  data):
         collection.insert_one(data)

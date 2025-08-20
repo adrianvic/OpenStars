@@ -1,5 +1,9 @@
 {
-  "MongoConnectionURL": "localhost",
+  "DBBackend": "sql",
+  "DBConnectionURL": "localhost",
+  "SQLUser": "brawlman",
+  "SQLPassword": "strongpassword",
+  "SQLDatabase": "OpenBrawl",
   "UpgradesEnabled": false,
   "ClubWarsEnabled": false,
   "StarPoints": 5000,
