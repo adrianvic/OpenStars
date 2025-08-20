@@ -36,7 +36,7 @@ latest_finger = patch_folder + "/fingerprint.json"
 
 parent = os.path.dirname(current_path) # classic brawl parent dir
 
-shutil.copy(latest_finger, parent + "/GameAssets") 
+shutil.copy(latest_finger, parent + "/GameAssetsReplication") 
 
 
 os.chdir(current_path + "/Patch/Patchs") # get back to the original folder/patch

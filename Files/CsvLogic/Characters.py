@@ -5,7 +5,7 @@ class Characters:
     def get_brawlers_id(self):
         BrawlersID = []
         reader = CsvReader()
-        rowData = reader.readCsv('GameAssets/csv_logic/characters.csv')
+        rowData = reader.readCsv('GameAssetsReplication/csv_logic/characters.csv')
         for row in rowData:
             if row[20] == 'Hero' and row[2].lower() != 'true' and row[1].lower() != 'true':
                 BrawlersID.append(rowData.index(row))
@@ -15,9 +15,9 @@ class Characters:
 
     def get_brawler_by_skin_id(self, skin_id):
         reader = CsvReader()
-        charsData  = reader.readCsv('GameAssets/csv_logic/characters.csv')
-        skinsData = reader.readCsv('GameAssets/csv_logic/skins.csv')
-        skinsConfsData = reader.readCsv('GameAssets/csv_logic/skin_confs.csv')
+        charsData  = reader.readCsv('GameAssetsReplication/csv_logic/characters.csv')
+        skinsData = reader.readCsv('GameAssetsReplication/csv_logic/skins.csv')
+        skinsConfsData = reader.readCsv('GameAssetsReplication/csv_logic/skin_confs.csv')
         for row in skinsData:
             if skinsData.index(row) == skin_id:
                 conf = row[1]

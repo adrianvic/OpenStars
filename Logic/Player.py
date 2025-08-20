@@ -53,7 +53,7 @@ class Player:
     maintenance_time  = settings['SecondsTillMaintenanceOver']
     patch = settings['Patch']
     patch_url = settings['PatchURL']
-    patch_sha = Fingerprint.loadFinger("GameAssets/fingerprint.json")
+    patch_sha = Fingerprint.loadFinger("GameAssetsReplication/fingerprint.json")
     update_url = settings['UpdateURL']
     clubWarsEnabled = settings["ClubWarsEnabled"] # Inefficient but the easiest i can do right now
     status: int = 0

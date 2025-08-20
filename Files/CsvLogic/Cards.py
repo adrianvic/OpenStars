@@ -4,7 +4,7 @@ class Cards:
     def get_spg_id(self):
         CardSkillsID = []
         reader = CsvReader()
-        rowData = reader.readCsv('GameAssets/csv_logic/cards.csv')
+        rowData = reader.readCsv('GameAssetsReplication/csv_logic/cards.csv')
         for row in rowData:
             if row[5].lower() == '4' or row[5].lower() == '5':
                 CardSkillsID.append(rowData.index(row))
@@ -13,7 +13,7 @@ class Cards:
 
     def check_spg_id(self, id):
         reader = CsvReader()
-        rowData = reader.readCsv('GameAssets/csv_logic/cards.csv')
+        rowData = reader.readCsv('GameAssetsReplication/csv_logic/cards.csv')
         for row in rowData:
             if rowData.index(row) == id:
                 return row[5].lower()
@@ -22,7 +22,7 @@ class Cards:
     def get_brawler_unlock(self):
         CardUnlockID = []
         reader = CsvReader()
-        rowData = reader.readCsv('GameAssets/csv_logic/cards.csv')
+        rowData = reader.readCsv('GameAssetsReplication/csv_logic/cards.csv')
         for row in rowData:
             if row[5].lower() == '0':
                 CardUnlockID.append(rowData.index(row))
@@ -31,8 +31,8 @@ class Cards:
 
     def get_spg_by_brawler_id(self, brawler_id, type):
         reader = CsvReader()
-        charsData  = reader.readCsv('GameAssets/csv_logic/characters.csv')
-        cardsData  = reader.readCsv('GameAssets/csv_logic/cards.csv')
+        charsData  = reader.readCsv('GameAssetsReplication/csv_logic/characters.csv')
+        cardsData  = reader.readCsv('GameAssetsReplication/csv_logic/cards.csv')
         for row in charsData:
             if charsData.index(row) == brawler_id:
                 name = row[0]
@@ -48,8 +48,8 @@ class Cards:
 
     def get_unlock_by_brawler_id(self, brawler_id):
         reader = CsvReader()
-        charsData  = reader.readCsv('GameAssets/csv_logic/characters.csv')
-        cardsData  = reader.readCsv('GameAssets/csv_logic/cards.csv')
+        charsData  = reader.readCsv('GameAssetsReplication/csv_logic/characters.csv')
+        cardsData  = reader.readCsv('GameAssetsReplication/csv_logic/cards.csv')
         for row in charsData:
             if charsData.index(row) == brawler_id:
                 name = row[0]
