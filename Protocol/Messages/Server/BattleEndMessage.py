@@ -3,7 +3,7 @@ from Logic.PlayerTransactions import PlayerTransactions
 from Utils.Debugging import Debugging
 
 class BattleEndMessage(Writer):
-    def __init__(self, client, player, gamemode: int, result: int, players: list):
+    def __init__(self, client, player, gamemode: int, result: int, players: list, token_rewards: int, trophies: int):
         super().__init__(client)
         self.id = 23456
         self.player  = player

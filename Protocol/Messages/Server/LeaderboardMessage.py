@@ -11,7 +11,6 @@ class LeaderboardMessage(Writer):
         self.isRegional: bool = regional
 
     def encode(self):
-        print(self.leaderboardType)
         self.writeVInt(self.leaderboardType)
         self.writeVInt(0)
         self.writeDataReference(*self.brawler)
