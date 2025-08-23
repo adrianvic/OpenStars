@@ -36,4 +36,5 @@ Go through this list by order:
 - [PhoenixFire](https://github.com/PhoenixFire6934) - the creator of Classic Brawl.
 - [CrazorTheCat](https://github.com/CrazorTheCat) - Contributor and other versions developer.
 - [8-bitHacc](https://github.com/8-bitHacc) - Contributor & Developer of new features of Classic Brawl.
+- [TaleBrawl Team](https://github.com/libgud/TaleBrawl/) - C# BS server used as reference.
 - [tenkuma](https://adrianvictor.rf.gd) - Contributor and creator of OpenStars.
