@@ -14,4 +14,3 @@ class LogicLevelUpCommand(Reader):
 
     def process(self, db):
         self.player.brawlers_level[str(self.brawler)] = self.player.brawlers_level[str(self.brawler)] + 1
-        db.update_player_account(self.player.token, 'BrawlersLevel', self.player.brawlers_level)

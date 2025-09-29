@@ -1,5 +1,6 @@
 from colorama import Fore
 import json
+import datetime
 
 class Logger:
     config = json.loads(open("logging.json", "r").read())
@@ -13,6 +14,7 @@ class Logger:
     lightgreen = Fore.LIGHTGREEN_EX
     lightmagenta = Fore.LIGHTMAGENTA_EX
     cyan = Fore.CYAN
+    logfile = open("server.log", "a", encoding="utf-8")
 
     @staticmethod
     def log(logType, text, dryRun = False):
@@ -31,5 +33,8 @@ class Logger:
                 case "NETWORK SERVER": color = Logger.lightmagenta
                 case "CONSOLECOMMAND": color = Logger.cyan
             msg = f"[{logType}] {text}"
-            if not dryRun: print(f"{Fore.RESET}{color}{msg}", flush=True)
+            if not dryRun: 
+                print(f"{Fore.RESET}{color}{msg}", flush=True)
+                Logger.logfile.write(f"{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} {msg}\n")
+                Logger.logfile.flush()
             return msg

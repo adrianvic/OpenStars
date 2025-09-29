@@ -1,5 +1,6 @@
 from ByteStream.Writer import Writer
 from Files.CsvLogic.Cards import Cards
+from Utils.Logger import Logger
 
 class LogicClientAvatar:
 
@@ -18,18 +19,14 @@ class LogicClientAvatar:
 
         self.writeVInt(8) # Commodity Array
 
-        self.player.brawlers_card_id = []
-        for x in self.player.brawlers_unlocked:
-            self.player.brawlers_card_id.append(Cards().get_unlock_by_brawler_id(x))
-
         # Unlocked Brawlers & Resources array
-        self.writeVInt(len(self.player.resources) + len(self.player.brawlers_card_id))
+        self.writeVInt(len(self.player.get_resources()) + len(self.player.brawlers_card_id))
 
         for x in self.player.brawlers_card_id:
             self.writeDataReference(23, x)
             self.writeVInt(1)
 
-        for resource in self.player.resources:
+        for resource in self.player.get_resources():
             self.writeDataReference(5, resource['ID'])
             self.writeVInt(resource['Amount'])
 
@@ -41,7 +38,7 @@ class LogicClientAvatar:
         self.writeVInt(len(self.player.brawlers_id))
         for x in self.player.brawlers_id:
             self.writeDataReference(16, x)
-            self.writeVInt(self.player.brawlers_high_trophies[str(x)])
+            self.writeVInt(self.player.brawlers_highest_trophies[str(x)])
 
         self.writeVInt(0)
         for x in range(0):
@@ -51,7 +48,7 @@ class LogicClientAvatar:
         self.writeVInt(len(self.player.brawlers_unlocked))
         for x in self.player.brawlers_unlocked:
             self.writeDataReference(16, x)
-            self.writeVInt(self.player.brawlers_powerpoints[str(x)])
+            self.writeVInt(self.player.brawlers_power_points[str(x)])
 
         self.writeVInt(len(self.player.brawlers_id))
         for x in self.player.brawlers_id:

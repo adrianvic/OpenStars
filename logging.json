@@ -3,9 +3,9 @@
     "CLIENT": "True",
     "ERROR": "True",
     "TRANSACTION": "True",
-    "DEBUG": "False",
+    "DEBUG": "True",
     "NETWORK CLIENT": "True",
-    "NETWORK SERVER": "False",
-    "WARNING": "False",
+    "NETWORK SERVER": "True",
+    "WARNING": "True",
     "CONSOLECOMMAND": "True"
 }

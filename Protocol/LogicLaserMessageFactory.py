@@ -23,8 +23,18 @@ from Protocol.Messages.Client.LeaveAllianceMessage import LeaveAllianceMessage
 from Protocol.Messages.Client.SearchAlliancesMessage import SearchAlliancesMessage
 from Protocol.Messages.Client.ChatToAllianceStreamMessage import ChatToAllianceStreamMessage
 from Protocol.Messages.Client.PlayerStatusMessage import PlayerStatusMessage
+from Protocol.Messages.Client.AnalyticEventMessage import AnalyticEventMessage
+from Protocol.Messages.Client.ClientCapabilitiesMessage import ClientCapabilitiesMessage
+from Protocol.Messages.Client.TeamMemberStatusMessage import TeamMemberStatusMessage
+from Protocol.Messages.Client.GetSeasonRewardsMessage import GetSeasonRewardsMessage
+from Protocol.Messages.Client.ChronosEventSeenMessage import ChronosEventSeenMessage
 
 packets = {
+    14166: ChronosEventSeenMessage,
+    14277: GetSeasonRewardsMessage,
+    14361: TeamMemberStatusMessage,
+    10107: ClientCapabilitiesMessage,
+    10110: AnalyticEventMessage,
     10101: LoginMessage,
     14103: StartGameMessage,
     10108: KeepAliveMessage,

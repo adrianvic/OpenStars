@@ -15,11 +15,29 @@ class SQLUtils:
             cursor.execute(sql, list(data.values()))
         self.conn.commit()
 
-    def update_document(self, table, query: dict, item: str, value):
-        where_clause = " AND ".join([f"{k}=%s" for k in query.keys()])
-        sql = f"UPDATE {table} SET {item}=%s WHERE {where_clause}"
+    def delete_data(self, table: str, data: dict):
+        conditions = " AND ".join([f"{col} = %s" for col in data.keys()])
+        sql = f"DELETE FROM {table} WHERE {conditions}"
         with self.conn.cursor() as cursor:
-            cursor.execute(sql, [value] + list(query.values()))
+            cursor.execute(sql, list(data.values()))
+        self.conn.commit()
+
+    def update_document(self, table, query: dict, item, value=None):
+        """
+        If `item` is a dict, treat as bulk update (key=value pairs).
+        If `item` is a str, update single field with `value`.
+        """
+        if isinstance(item, dict):
+            set_clause = ", ".join([f"{k}=%s" for k in item.keys()])
+            values = list(item.values())
+        else:
+            set_clause = f"{item}=%s"
+            values = [value]
+
+        where_clause = " AND ".join([f"{k}=%s" for k in query.keys()])
+        sql = f"UPDATE {table} SET {set_clause} WHERE {where_clause}"
+        with self.conn.cursor() as cursor:
+            cursor.execute(sql, values + list(query.values()))
         self.conn.commit()
 
     def update_all_documents(self, table, query: dict, item: str, value):

@@ -1,15 +1,13 @@
 from ByteStream.Reader import Reader
 
-class LogicPurchaseBrawlPassCommand(Reader):
+class AnalyticEventMessage(Reader):
     def __init__(self, client, player, initial_bytes):
         super().__init__(initial_bytes)
-        self.player = player
         self.client = client
+        self.player = player
 
     def decode(self):
-        self.readVInt()
-        self.readVInt()
-        self.readLogicLong()
+        pass
 
     def process(self, db):
-        self.player.brawl_pass_activated = True
+        pass

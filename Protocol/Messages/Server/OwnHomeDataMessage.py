@@ -2,6 +2,7 @@ from Logic.ClientHome import LogicClientHome
 from Logic.ClientAvatar import LogicClientAvatar
 from ByteStream.Writer import Writer
 from datetime import datetime
+from Utils.Logger import Logger
 
 class OwnHomeDataMessage(Writer):
 
@@ -16,4 +17,3 @@ class OwnHomeDataMessage(Writer):
         LogicClientAvatar.encode(self)
 
         self.writeVInt(self.time_stamp)
-

@@ -39,14 +39,14 @@
          "Items": [
             {
                "OfferID": 6,
-               "Amount": 60
+               "Amount": 1
             },
             {
                "OfferID": 1,
-               "Amount": 69
+               "Amount": 1
             }
          ],
-         "Cost": 15,
+         "Cost": 0,
          "OfferBackground": "offer_xmas",
          "Title": "Welcome to MargarinaBrawl!"
       }

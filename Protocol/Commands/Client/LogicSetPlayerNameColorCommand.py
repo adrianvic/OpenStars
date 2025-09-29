@@ -13,4 +13,4 @@ class LogicSetPlayerNameColorCommand(Reader):
         self.player.name_color = self.readDataReference()[1]
 
     def process(self, db):
-        db.update_player_account(self.player.token, 'NameColor', self.player.name_color)
+        db.update_player_account(self.player.token, {'NameColor': self.player.name_color})

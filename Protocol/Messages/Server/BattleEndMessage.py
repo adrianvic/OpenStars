@@ -3,7 +3,7 @@ from Logic.PlayerTransactions import PlayerTransactions
 from Utils.Debugging import Debugging
 
 class BattleEndMessage(Writer):
-    def __init__(self, client, player, gamemode: int, result: int, players: list, token_rewards: int, trophies: int):
+    def __init__(self, client, player, gamemode: int, result: int, players: list):
         super().__init__(client)
         self.id = 23456
         self.player  = player
@@ -83,13 +83,20 @@ class BattleEndMessage(Writer):
 
     def transaction(self):
         trophiesAmount = 0
+        tokensAmount = 0
         if self.result == 0 and self.gamemode == 0:
             trophiesAmount = 8
+            tokensAmount = 50
         if self.result == 1 and self.gamemode == 0:
             trophiesAmount = -4
+            tokensAmount = 10
         if self.result == 0 and self.gamemode == 1:
             trophiesAmount = 5
+            tokensAmount = 50
         if self.result == 1 and self.gamemode == 1:
             trophiesAmount = -5
+            tokensAmount = 10
+
         PlayerTransactions.trophies(self.player, trophiesAmount, self.player.home_brawler)
+        self.player.add_resource(1, tokensAmount)
         return trophiesAmount

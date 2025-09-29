@@ -17,8 +17,7 @@ class SetNameMessage(Reader):
         if self.username != '':
             if len(self.username) >= 2 and len(self.username) <= 20:
                 self.player.name = self.username
-                db.update_player_account(self.player.token, 'Name', self.username)
-                db.update_player_account(self.player.token, 'NameSet', True)
+                self.player.name_set = True
                 AvailableServerCommandMessage(self.client, self.player, LogicChangeAvatarNameCommand).send()
             else:
                 AvatarNameChangeFailedMessage(self.client, self.player).send()

@@ -15,9 +15,5 @@ class LogicPurchaseHeroLvlUpMaterialCommand(Reader):
 
 
     def process(self, db):
-
-        self.player.resources[1]['Amount'] = self.player.resources[1]['Amount'] + LogicShopData.gold_packs[self.gold_value]['Amount']
-        db.update_player_account(self.player.token, 'Resources', self.player.resources)
-
-        self.player.gems = self.player.gems - LogicShopData.gold_packs[self.gold_value]['Cost']
-        db.update_player_account(self.player.token, 'Gems', self.player.gems)
+        self.player.box_tokens += LogicShopData.gold_packs[self.gold_value]['Amount']
+        self.player.gems -= LogicShopData.gold_packs[self.gold_value]['Cost']

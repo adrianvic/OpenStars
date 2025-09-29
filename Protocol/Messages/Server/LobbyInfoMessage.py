@@ -9,6 +9,6 @@ class LobbyInfoMessage(Writer):
 
     def encode(self):
         self.writeVInt(self.count) # Players Online
-        self.writeString("Classic Brawl v2.0")
+        self.writeString("OpenStars")
 
         self.writeVInt(0) # Lobby Info Entry Count

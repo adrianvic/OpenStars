@@ -13,4 +13,4 @@ class LogicSetPlayerThumbnailCommand(Reader):
         self.player.profile_icon = self.readDataReference()[1]
 
     def process(self, db):
-        db.update_player_account(self.player.token, 'ProfileIcon', self.player.profile_icon)
+        db.update_player_account(self.player.token, {'profile_icon': self.player.profile_icon} )

@@ -9,4 +9,4 @@ class SetSupportedCreatorResponseMessage(Writer):
 
     def encode(self):
         self.writeVInt(1)
-        self.writeString(self.player.content_creator)
+        self.writeString(self.player.supported_content_creator)

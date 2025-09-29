@@ -22,10 +22,8 @@ class LogicGatchaCommand(Reader):
 
         if self.box_id == 1:
             self.player.gems = self.player.gems - LogicShopData.boxes[0]['Cost']
-            db.update_player_account(self.player.token, 'Gems', self.player.gems)
         elif self.box_id == 3:
             self.player.gems = self.player.gems - LogicShopData.boxes[1]['Cost']
-            db.update_player_account(self.player.token, 'Gems', self.player.gems)
 
         self.player.db = db
         AvailableServerCommandMessage(self.client, self.player, LogicGiveDeliveryItemsCommand).send()

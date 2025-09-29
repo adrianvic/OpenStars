@@ -60,16 +60,16 @@ class MongoDB:
         }
 
         self.club_data = {
-            'Name': '',
-            'Description': '',
-            'Region': '',
-            'BadgeID': 0,
-            'Type': 0,
-            'Trophies': 0,
-            'RequiredTrophies': 0,
-            'FamilyFriendly': 0,
-            'Members': [],
-            'Messages': []
+            'name': '',
+            'description': '',
+            'region': '',
+            'badge_id': 0,
+            'type': 0,
+            'trophies': 0,
+            'required_trophies': 0,
+            'family_friendly': 0,
+            'members': [],
+            'messages': []
         }
 
     def merge(self, dict1, dict2):

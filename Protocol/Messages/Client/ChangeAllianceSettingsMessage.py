@@ -27,8 +27,6 @@ class ChangeAllianceSettingsMessage(Reader):
         db.update_club(self.club_id, 'FamilyFriendly', self.club_family_friendly)
         db.update_club(self.club_id, 'Region', self.club_region)
 
-        print(self.club_region)
-
         club_data = db.load_club(self.club_id)
 
         MyAllianceMessage(self.client, self.player, club_data).send()

@@ -15,100 +15,87 @@ class LogicPurchaseOfferCommand(Reader):
         self.readVInt()
         self.readVInt()
         self.readLogicLong()
-
         self.offer_index = self.readVInt()
-
         self.brawler = self.readDataReference()[1]
 
     def process(self, db):
-        offer_resource = LogicShopData.offers[self.offer_index].get("Currency", 0)
-        offer_cost     = LogicShopData.offers[self.offer_index]["Cost"]
+        offer = LogicShopData.offers[self.offer_index]
+        if offer.get("Claimed", False):
+            return  # Already claimed
 
-        if not LogicShopData.offers[self.offer_index].get("Claimed", False):
+        self.player.delivery_items = {"DeliveryTypes": [100], "Items": []}
 
+        # Dispatch map: OfferID -> handler function
+        def handle_gems(item):
+            amt = item.get("Amount", 1)
+            self.player.delivery_items["Items"].append({"Amount": amt, "Value": 8})
+            self.player.gems += amt
 
-            self.player.delivery_items = {
-                "DeliveryTypes": [100],
-                'Items': []
-            }
+        def handle_tokens(item):
+            amt = item.get("Amount", 1)
+            self.player.delivery_items["Items"].append({"Amount": amt, "DataRef": [0, 0], "Value": 2})
+            self.player.token_doubler += amt
 
-            for item in LogicShopData.offers[self.offer_index]["Items"]:
-                if item["OfferID"] == 1:
-                    delivery = {'Amount': item.get("Amount", 1), 'Value':7 }
-                    self.player.delivery_items['Items'].append(delivery)
-                    self.player.resources[1]['Amount'] += item.get("Amount", 1)
-                    db.update_player_account(self.player.token, 'Resources', self.player.resources)
+        def handle_resources(item):
+            self.player.coins += item.get("Amount", 1)
+            self.player.delivery_items["Items"].append({"Amount": item.get("Amount", 1), "Value": 7})
 
-                elif item["OfferID"] == 4:
-                    delivery = {"Amount": 1, "Value": 9, "ItemID": [29, item.get("ItemID", 0)]}
-                    self.player.delivery_items['Items'].append(delivery)
+        def handle_skins(item):
+            iid = item.get("ItemID", 0)
+            self.player.delivery_items["Items"].append({"Amount": 1, "Value": 9, "ItemID": [29, iid]})
+            if iid not in self.player.unlocked_skins:
+                self.player.unlocked_skins.append(iid)
 
-                    if delivery["ItemID"][1] not in self.player.unlocked_skins:
-                        self.player.unlocked_skins.append(delivery["ItemID"][1])
-                        db.update_player_account(self.player.token, "UnlockedSkins", self.player.unlocked_skins)
+        def handle_brawlers(item):
+            dr = item.get("CharacterID", [16, 0])
+            self.player.delivery_items["Items"].append({"Amount": item.get("Amount", 1), "DataRef": dr, "Value": 1})
+            if dr not in self.player.brawlers_unlocked:
+                self.player.brawlers_unlocked.append(dr)
 
-                elif item["OfferID"] == 16:
-                    delivery = {'Amount': item.get("Amount", 1), 'Value':8 }
-                    self.player.delivery_items['Items'].append(delivery)
+        def handle_brawler_pp(item):
+            dr = item.get("CharacterID", [16, 0])
+            amt = item.get("Amount", 1)
+            self.player.delivery_items["Items"].append({"Amount": amt, "DataRef": dr, "Value": 6})
+            key = str(dr[1])
+            self.player.brawlers_powerpoints[key] = self.player.brawlers_powerpoints.get(key, 0) + amt
 
-                    self.player.gems += item.get("Amount", 1)
-                    db.update_player_account(self.player.token, 'Gems', self.player.gems)
+        def handle_delivery_types(item, dtype):
+            for _ in range(item.get("Amount", 1)):
+                self.player.delivery_items["DeliveryTypes"].append(dtype)
+            self.player.delivery_items["Count"] = item.get("Amount", 1)
 
-                elif item["OfferID"] == 9:
-                    delivery = {'Amount': item.get("Amount", 1), 'DataRef': [0, 0], 'Value':2 }
-                    self.player.delivery_items['Items'].append(delivery)
+        # Map OfferID to handler
+        dispatch = {
+            1: handle_resources,
+            3: handle_brawlers,
+            4: handle_skins,
+            8: handle_brawler_pp,
+            9: handle_tokens,
+            12: handle_brawler_pp,
+            16: handle_gems,
+            0: lambda item: handle_delivery_types(item, 10),
+            6: lambda item: handle_delivery_types(item, 10),
+            10: lambda item: handle_delivery_types(item, 11),
+            14: lambda item: handle_delivery_types(item, 12),
+        }
 
-                    self.player.token_doubler = self.player.token_doubler + item.get("Amount", 1)
-                    db.update_player_account(self.player.token, 'TokenDoubler', self.player.token_doubler)
+        # Process items
+        for item in offer["Items"]:
+            handler = dispatch.get(item["OfferID"])
+            if handler:
+                handler(item)
+            else:
+                print(f"Unsupported offer ID: {item['OfferID']}")
 
-                elif item["OfferID"] == 3:
-                    delivery = {'Amount': item.get("Amount", 1), 'DataRef': item.get("CharacterID", [16, 0]), 'Value':1 }
-                    self.player.delivery_items['Items'].append(delivery)
-                    if delivery["DataRef"] not in self.player.brawlers_unlocked:
-                        self.player.brawlers_unlocked.append(delivery["DataRef"])
-                        db.update_player_account(self.player.token, 'UnlockedBrawlers', self.player.brawlers_unlocked)
+        # Apply cost
+        resource_type = offer.get("Currency", 0)
+        cost = offer["Cost"]
+        if resource_type == 0:
+            self.player.gems -= cost
+        elif resource_type == 1:
+            self.player.coins -= cost
+        elif resource_type == 3:
+            self.player.resources[3]["Amount"] -= cost
 
-                elif item["OfferID"] == 12:
-                    delivery = {'Amount': item.get("Amount", 1), 'DataRef': [16, self.brawler], 'Value':6 }
-                    self.player.delivery_items['Items'].append(delivery)
-
-                    self.player.brawlers_powerpoints[str(self.brawler)] =+ item.get("Amount", 1)
-                    db.update_player_account(self.player.token, 'BrawlersPowerPoints', self.player.brawlers_powerpoints)
-
-                elif item["OfferID"] == 8:
-                    delivery = {'Amount': item.get("Amount", 1), 'DataRef': item.get("CharacterID", [16, 0]), 'Value':6}
-                    self.player.delivery_items['Items'].append(delivery)
-
-                    self.player.brawlers_powerpoints[str(item.get("CharacterID", [16, 0]))] += item.get("Amount", 1)
-                    db.update_player_account(self.player.token, 'BrawlersPowerPoints', self.player.brawlers_powerpoints)
-
-                elif item["OfferID"] in [0, 6]:
-                    for i in range(item["Amount"]): self.player.delivery_items["DeliveryTypes"].append(10)
-                    self.player.delivery_items['Count'] = item.get("Amount", 1)
-
-                elif item["OfferID"] == 14:
-                    for i in range(item["Amount"]): self.player.delivery_items["DeliveryTypes"].append(12)
-                    self.player.delivery_items['Count'] = item.get("Amount", 1)
-
-                elif item["OfferID"] == 10:
-                    for i in range(item["Amount"]): self.player.delivery_items["DeliveryTypes"].append(11)
-                    self.player.delivery_items['Count'] = item.get("Amount", 1)
-
-                else:
-                    print(f"Unsupported offer ID: {item['OfferID']}")
-
-            if offer_resource == 0:
-                self.player.gems -= offer_cost
-                db.update_player_account(self.player.token, 'Gems', self.player.gems)
-
-            elif offer_resource == 1:
-                self.player.resources[1]['Amount'] -= offer_cost
-                db.update_player_account(self.player.token, 'Resources', self.player.resources)
-
-            elif offer_resource == 3:
-                self.player.resources[3]['Amount'] -= offer_cost
-                db.update_player_account(self.player.token, 'Resources', self.player.resources)
-
-            self.player.db = db
-
-            AvailableServerCommandMessage(self.client, self.player, LogicGiveDeliveryItemsCommand).send()
+        self.player.db = db
+        AvailableServerCommandMessage(self.client, self.player, LogicGiveDeliveryItemsCommand).send()

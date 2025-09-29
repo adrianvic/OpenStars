@@ -22,34 +22,31 @@ class CreateAllianceMessage(Reader):
 
     def process(self, db):
         data = {
-            "Name": self.club_name,
-            "Description": self.club_desc,
-            "Region": self.club_region,
-            "BadgeID": self.club_badge,
-            "Type": self.club_type,
-            "Trophies": self.player.trophies,
-            "RequiredTrophies": self.club_req_trophies,
-            "FamilyFriendly": self.club_family_friendly,
-            "Members": [
+            "name": self.club_name,
+            "description": self.club_desc,
+            "region": self.club_region,
+            "badge_id": self.club_badge,
+            "type": self.club_type,
+            "trophies": self.player.trophies,
+            "required_trophies": self.club_req_trophies,
+            "family_friendly": self.club_family_friendly,
+            "members": [
                 {
-                 'Name': self.player.name,
+                 'name': self.player.name,
                  'ID': self.player.ID,
-                 'Role': 2,
-                 'Trophies': self.player.trophies,
-                 'ProfileIcon': self.player.profile_icon,
-                 'NameColor': self.player.name_color
+                 'role': 2,
+                 'trophies': self.player.trophies,
+                 'profile_icon': self.player.profile_icon,
+                 'name_color': self.player.name_color
                  }
             ],
-            "Messages": []
+            "messages": []
         }
 
         self.player.club_id = Helpers.randomID(self)
         self.player.club_role = 2
 
         db.create_club(self.player.club_id, data)
-        db.update_player_account(self.player.token, 'ClubID', self.player.club_id)
-        db.update_player_account(self.player.token, 'ClubRole', self.player.club_role)
-
         club_data = db.load_club(self.player.club_id)
 
         MyAllianceMessage(self.client, self.player, club_data).send()

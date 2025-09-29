@@ -2,12 +2,12 @@ class Command:
     def __init__(self):
         self.name = "kick"
 
-    async def execute(self, server, websocket, *args):
+    async def execute(self, CommandContext, *args):
         from Utils.Helpers import Helpers
         from Utils.Logger import Logger
 
         if not args:
-            await websocket.send("Usage: kick <player_id> <kick_id> [reason]")
+            await CommandContext.send("Usage: kick <player_id> <kick_id> [reason]")
             return
 
         player_id = args[0]
@@ -17,5 +17,5 @@ class Command:
         result = Helpers.kick_player(player_id, kick_id, reason)
 
         if (result):
-            await websocket.send(Logger.log("consolecommand", f"Kicked {player_id} ({reason})", True))
-        else: await websocket.send(Logger.log("error", f"Kick failed: no client with id {player_id}", True))
+            await CommandContext.send(Logger.log("consolecommand", f"Kicked {player_id} ({reason})", True))
+        else: await CommandContext.send(Logger.log("error", f"Kick failed: no client with id {player_id}", True))

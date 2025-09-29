@@ -13,6 +13,7 @@ class Server:
 
     def __init__(self, ip: str, port: int):
         self.db = MongoDB() if Config.config["DBBackend"] == 'mongodb' else SQLDatabase()
+        # self.db.ensure_schema()
         self.server = socket.socket()
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # You can start server with the same address
         self.port = port

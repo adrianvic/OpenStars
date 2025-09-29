@@ -1,4 +1,5 @@
 from ByteStream.Reader import Reader
+import Config
 from Protocol.Messages.Server.AvailableServerCommandMessage import AvailableServerCommandMessage
 from Protocol.Messages.Server.SetSupportedCreatorResponseMessage import SetSupportedCreatorResponseMessage
 from Protocol.Commands.Server.LogicSetSupportedCreatorCommand import LogicSetSupportedCreatorCommand
@@ -10,11 +11,11 @@ class SetSupportedCreatorMessage(Reader):
         self.client = client
 
     def decode(self):
-        self.player.content_creator = self.readString()
+        self.creator_code = self.readString()
 
     def process(self, db):
-        if self.player.content_creator.lower() in self.player.content_creator_codes or self.player.content_creator == '':
-            db.update_player_account(self.player.token, 'SupportedContentCreator', self.player.content_creator)
+        if self.creator_code in Config.config.get("ContentCreatorCodes"):
+            self.player.supported_content_creator = self.creator_code
             AvailableServerCommandMessage(self.client, self.player, LogicSetSupportedCreatorCommand).send()
         else:
             SetSupportedCreatorResponseMessage(self.client, self.player).send()

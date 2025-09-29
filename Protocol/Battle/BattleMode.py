@@ -306,3 +306,5 @@ class BattleMode:
 
     def get_random_int(a: int, b: int) -> int:
         return random.randrange(a, b)
+
+    

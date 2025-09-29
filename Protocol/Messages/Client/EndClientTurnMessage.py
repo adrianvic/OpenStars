@@ -26,7 +26,7 @@ class EndClientTurnMessage(Reader):
                 if command:
                     self.commands[x]["cls"] = command
                     command.decode(self)
-                    Logger.log("warning", f"CommandID: {commandID}, {command.__name__} handled!")
+                    Logger.log("network server", f"CommandID: {commandID}, {command.__name__} handled!")
                 else:
                     # Attempt to decode LogicCommand, a more proper reimplementation of Commands will come soon.
                     self.readVInt()

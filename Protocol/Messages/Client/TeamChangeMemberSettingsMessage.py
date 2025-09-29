@@ -31,8 +31,4 @@ class TeamChangeMemberSettingsMessage(Reader):
             elif type == '5':
                 self.player.gadget = self.data_ref[1]
 
-            db.update_player_account(self.player.token, 'StarPower', self.player.starpower)
-            db.update_player_account(self.player.token, 'Gadget', self.player.gadget)
-
-
         TeamMessage(self.client, self.player).send()

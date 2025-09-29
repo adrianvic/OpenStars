@@ -1,4 +1,6 @@
 import json, string, random
+import Logic.Player
+import re
 
 class Helpers:
     connected_clients = {"ClientsCount": 0, "Clients": {}}
@@ -42,31 +44,6 @@ class Helpers:
 
         with open('config.json', 'w') as config_file:
             json.dump(settings, config_file)
-
-    def load_account(self, player_data):
-        self.player.name_set = player_data['NameSet']
-        self.player.name = player_data['Name']
-        self.player.trophies = player_data['Trophies']
-        self.player.gems = player_data['Gems']
-        self.player.resources = player_data['Resources']
-        self.player.token_doubler = player_data['TokenDoubler']
-        self.player.high_trophies = player_data['HighestTrophies']
-        self.player.trophy_reward = player_data['TrophyRoadReward']
-        self.player.exp_points = player_data['ExperiencePoints']
-        self.player.profile_icon = player_data['ProfileIcon']
-        self.player.name_color = player_data['NameColor']
-        self.player.brawlers_unlocked = player_data['UnlockedBrawlers']
-        self.player.brawlers_trophies = player_data['BrawlersTrophies']
-        self.player.brawlers_high_trophies = player_data['BrawlersHighestTrophies']
-        self.player.brawlers_level = player_data['BrawlersLevel']
-        self.player.brawlers_powerpoints = player_data['BrawlersPowerPoints']
-        self.player.unlocked_skins = player_data['UnlockedSkins']
-        self.player.selected_skins = player_data['SelectedSkins']
-        self.player.tickets = player_data['Tickets']
-        self.player.home_brawler = player_data['SelectedBrawler']
-        self.player.region = player_data['Region']
-        self.player.content_creator = player_data['SupportedContentCreator']
-
 
     def load_club(self, club_data):
         try:

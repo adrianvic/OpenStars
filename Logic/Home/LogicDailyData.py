@@ -11,11 +11,11 @@ class LogicDailyData:
         self.writeVInt(time_stamp)
 
         self.writeVInt(self.player.trophies)
-        self.writeVInt(self.player.high_trophies)
-        self.writeVInt(self.player.high_trophies)
+        self.writeVInt(self.player.highest_trophies)
+        self.writeVInt(self.player.highest_trophies)
 
-        self.writeVInt(self.player.trophy_reward)
-        self.writeVInt(self.player.exp_points)
+        self.writeVInt(self.player.trophy_road_reward)
+        self.writeVInt(self.player.experience_points)
 
         self.writeDataReference(28, self.player.profile_icon)
         self.writeDataReference(43, self.player.name_color)
@@ -37,7 +37,7 @@ class LogicDailyData:
             self.writeDataReference(0,0)
 
         self.writeVInt(0)      # Leaderboard Global TID
-        self.writeVInt(self.player.high_trophies)  # Trophy Road Reached Icon
+        self.writeVInt(self.player.highest_trophies)  # Trophy Road Reached Icon
         self.writeVInt(0)      # Unknown
 
         self.writeUInt8(0)
@@ -85,7 +85,7 @@ class LogicDailyData:
         self.writeDataReference(16, self.player.home_brawler)
 
         self.writeString(self.player.region)
-        self.writeString(self.player.content_creator)
+        self.writeString(self.player.supported_content_creator)
 
         self.writeVInt(0)  # Unknown Array
         for x in range(0):

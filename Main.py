@@ -7,34 +7,15 @@ from Config import load_config
 import Config
 from Utils.Logger import Logger
 import websockets
-
-# ------------------------
-# Console command loader
-# ------------------------
-class ConsoleCommands:
-    def __init__(self):
-        self.commands = {}
-        self.load_commands()
-
-    def load_commands(self):
-        import Protocol.ConsoleCommands as CommandsModule
-        for _, module_name, _ in pkgutil.iter_modules(CommandsModule.__path__):
-            module = importlib.import_module(f"Protocol.ConsoleCommands.{module_name}")
-            if hasattr(module, "Command"):
-                cmd_cls = module.Command()
-                self.commands[cmd_cls.name] = cmd_cls
-        Logger.log("debug", f"Loaded console commands: {list(self.commands.keys())}")
-
-    def get(self, name):
-        return self.commands.get(name)
-
+from ConsoleCommands import get_console_commands
 
 # ------------------------
 # WebSocket console handler
 # ------------------------
-async def handle_console(websocket, path, server, command_registry):
+async def handle_console(websocket, path, server):
     addr = websocket.remote_address
     Logger.log("debug", f"Web console connected from {addr}")
+    command_registry = get_console_commands()
 
     try:
         async for message in websocket:
@@ -48,8 +29,8 @@ async def handle_console(websocket, path, server, command_registry):
 
             if cmd_obj:
                 try:
-                    # pass websocket into command
-                    await cmd_obj.execute(server, websocket, *args)
+                    ctx = CommandContext(server, source="console", websocket=websocket)
+                    await cmd_obj.execute(server, ctx, *args)
                 except Exception as e:
                     await websocket.send(f"Error executing {cmd_name}: {e}")
             else:
@@ -99,14 +80,18 @@ class Main:
             self.updater = Updater()
 
         srv = Server("0.0.0.0", 9339)
-        commands = ConsoleCommands()
+        commands = get_console_commands()
 
         # Start server thread
         threading.Thread(target=srv.start, daemon=True).start()
 
         # Start websocket console server thread
-        threading.Thread(target=start_console_server, args=(srv, commands), daemon=True).start()
-
+        threading.Thread(
+            target=start_console_server,
+            args=(srv, commands, "127.0.0.1", 8765),
+            daemon=True
+        ).start()
+        
         Logger.log("*", "Connect to console via WebSocket ws://127.0.0.1:8765")
 
         # Keep main thread alive

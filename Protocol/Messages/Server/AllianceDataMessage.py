@@ -10,37 +10,37 @@ class AllianceDataMessage(Writer):
         self.club_data = club_data
 
     def encode(self):
-        if self.club_data['ID'] != 0:
-
+        print(self.club_data)
+        if self.club_data:
             self.writeVInt(0)
             self.writeLong(self.club_data['ID'])
-            self.writeString(self.club_data['Name'])
-            self.writeDataReference(8, self.club_data['BadgeID'])
-            self.writeVInt(self.club_data['Type'])
-            self.writeVInt(len(self.club_data['Members']))
-            self.writeVInt(self.club_data['Trophies'])
-            self.writeVInt(self.club_data['RequiredTrophies'])
+            self.writeString(self.club_data['name'])
+            self.writeDataReference(8, self.club_data['badge_id'])
+            self.writeVInt(self.club_data['type'])
+            self.writeVInt(len(self.club_data['members']))
+            self.writeVInt(self.club_data['trophies'])
+            self.writeVInt(self.club_data['required_trophies'])
             self.writeDataReference(0, 0)
-            self.writeString(Regions().get_region_string(self.club_data['Region']))
+            self.writeString(Regions().get_region_string(self.club_data['region']))
             self.writeVInt(0)
-            self.writeVInt(self.club_data['FamilyFriendly'])
+            self.writeVInt(self.club_data['family_friendly'])
 
-            self.writeString(self.club_data['Description'])
+            self.writeString(self.club_data['description'])
 
-            self.writeVInt(len(self.club_data['Members']))
+            self.writeVInt(len(self.club_data['members']))
 
-            for member in self.club_data['Members']:
+            for member in self.club_data['members']:
                 self.writeLong(member['ID'])
-                self.writeVInt(member['Role'])
-                self.writeVInt(member['Trophies'])
+                self.writeVInt(member['role'])
+                self.writeVInt(member['trophies'])
                 self.writeVInt(2) # Player Status
                 self.writeVInt(0)
                 self.writeVInt(0)
 
-                self.writeString(member['Name'])
+                self.writeString(member['name'])
                 self.writeVInt(100)
-                self.writeVInt(28000000 + member['ProfileIcon'])
-                self.writeVInt(43000000 + member['NameColor'])
+                self.writeVInt(28000000 + member['profile_icon'])
+                self.writeVInt(43000000 + member['name_color'])
 
         else:
             self.writeVInt(2)

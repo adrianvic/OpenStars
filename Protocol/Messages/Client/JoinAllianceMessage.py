@@ -17,22 +17,20 @@ class JoinAllianceMessage(Reader):
         self.player.club_role = 1
 
         club_data = db.load_club(self.club_id)
-        club_data['Members'].append(
+        club_data['members'].append(
             {
                 f'Name': self.player.name,
                 'ID': self.player.ID,
-                'Role': self.player.club_role,
-                'Trophies': self.player.trophies,
-                'ProfileIcon': self.player.profile_icon,
-                'NameColor': self.player.name_color
+                'role': self.player.club_role,
+                'trophies': self.player.trophies,
+                'profile_icon': self.player.profile_icon,
+                'name_color': self.player.name_color
             }
         )
 
-        db.update_club(self.club_id, 'Members', club_data['Members'])
-        db.update_club(self.club_id, 'Trophies', club_data['Trophies'] + self.player.trophies)
-        db.update_player_account(self.player.token, 'ClubID', self.player.club_id)
-        db.update_player_account(self.player.token, 'ClubRole', self.player.club_role)
+        db.update_club(self.club_id, {'members': club_data['members']})
+        db.update_club(self.club_id, {'trophies': club_data['trophies'] + self.player.trophies})
 
         AllianceResponseMessage(self.client, self.player, 40).send()
         MyAllianceMessage(self.client, self.player, club_data).send()
-        AllianceStreamMessage(self.client, self.player, club_data['Messages']).send()
+        AllianceStreamMessage(self.client, self.player, club_data['members']).send()

@@ -2,7 +2,7 @@ class Command:
     def __init__(self):
         self.name = "clients"
 
-    async def execute(self, server, websocket, *args):
+    async def execute(self, CommandContext, *args):
         from Utils.Logger import Logger
         from Utils.Helpers import Helpers
         import json
@@ -12,4 +12,4 @@ class Command:
             'Clients': Helpers.serialize_clients(Helpers.connected_clients['Clients'])
         }        
 
-        await websocket.send(json.dumps(serialized_clients))
+        await CommandContext.send(json.dumps(serialized_clients))
