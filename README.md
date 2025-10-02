@@ -32,7 +32,7 @@ Go through this list by order:
 2. [E-mail](mailto:adrianvictor+openstars@disroot.org)
 3. Anywhere else you can find me
 
-## Contributing
+### Contributing
 Just make a pull request. Contact me if you need help.
 
 ### Credits
@@ -41,4 +41,5 @@ Just make a pull request. Contact me if you need help.
 - [8-bitHacc](https://github.com/8-bitHacc) - Contributor & Developer of new features of Classic Brawl.
 - [TaleBrawl Team](https://github.com/libgud/TaleBrawl/) - C# BS server used as reference.
 - [tenkuma](https://adrianvictor.rf.gd) - Contributor and creator of OpenStars.
+
 
