@@ -98,6 +98,7 @@ class Player:
         "brawlers_power_points": {str(b): 0 for b in brawlers_id},
         "club_id": 0,
         "club_role": 0,
+        "token_rewards": 0,
     }
 
     _volatile = {
@@ -206,3 +207,10 @@ class Player:
             {"ID": 9, "Amount": self.big_box_tokens},
             {"ID": 10, "Amount": 0} # star points
         ]
+
+    def reward_token(amount: int):
+        self._data.token_rewards += amount
+        self._data.box_tokens += amount
+
+    def token_rewards_seen():
+        self._data.token_rewards = 0
