@@ -12,7 +12,7 @@ Fork of Classic Brawl, a simple Brawl Stars v26.184 server emulator written in P
 - colorama
 
 ### Database configuration
-OpenStars supports SQL and MongoDB, pick one and put your database connection parameters in `config.json`.
+OpenStars supports SQL and MongoDB (not working currently), pick one and put your database connection parameters in `config.json`.
 ```
 "DBBackend": "sql or mongodb",
 ```
@@ -32,9 +32,13 @@ Go through this list by order:
 2. [E-mail](mailto:adrianvictor+openstars@disroot.org)
 3. Anywhere else you can find me
 
+## Contributing
+Just make a pull request. Contact me if you need help.
+
 ### Credits
 - [PhoenixFire](https://github.com/PhoenixFire6934) - the creator of Classic Brawl.
 - [CrazorTheCat](https://github.com/CrazorTheCat) - Contributor and other versions developer.
 - [8-bitHacc](https://github.com/8-bitHacc) - Contributor & Developer of new features of Classic Brawl.
 - [TaleBrawl Team](https://github.com/libgud/TaleBrawl/) - C# BS server used as reference.
 - [tenkuma](https://adrianvictor.rf.gd) - Contributor and creator of OpenStars.
+
